@@ -1,0 +1,60 @@
+group 'com.example.idoflutter'
+version '1.0'
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.2.0'
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url "https://mvn.getui.com/nexus/content/repositories/releases/"
+        }
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    if (project.android.hasProperty("namespace")) {
+        namespace 'com.example.idoflutter'
+    }
+
+    compileSdkVersion 33
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        minSdkVersion 19
+    }
+
+    dependencies {
+        //用户运营sdk
+        implementation 'com.getui:gsido:1.4.6.0'
+        //个推核心组件
+        implementation 'com.getui:gtc:3.2.13.0'
+
+    }
+
+    testOptions {
+        unitTests.all {
+            testLogging {
+               events "passed", "skipped", "failed", "standardOut", "standardError"
+               outputs.upToDateWhen {false}
+               showStandardStreams = true
+            }
+        }
+    }
+}
