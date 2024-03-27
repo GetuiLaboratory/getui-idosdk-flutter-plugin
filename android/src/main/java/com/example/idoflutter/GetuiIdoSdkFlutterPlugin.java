@@ -34,105 +34,147 @@ public class GetuiIdoSdkFlutterPlugin implements FlutterPlugin, MethodCallHandle
     private MethodChannel channel;
     private Context fContext;
     public static GetuiIdoSdkFlutterPlugin instance;
+
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "IdoFlutter");
         channel.setMethodCallHandler(this);
-        instance=this;
+        instance = this;
         fContext = flutterPluginBinding.getApplicationContext();
     }
 
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
-        Log.d(TAG, "onMethodCall: " + call.method+" . arguments: "+call.arguments);
+        Log.d(TAG, "onMethodCall: " + call.method + " . arguments: " + call.arguments);
         if (call.method.equals("getPlatformVersion")) {
             result.success("Android " + android.os.Build.VERSION.RELEASE);
-        }else if (call.method.equals("setDebugEnable")){
+        } else if (call.method.equals("setDebugEnable")) {
             setDebugEnable(Boolean.TRUE.equals(call.argument("debugEnable")));
-        }else if (call.method.equals("setInstallChannel")){
+        } else if (call.method.equals("setInstallChannel")) {
             setInstallChannel(call.argument("channel"));
-        }else if (call.method.equals("setAppId")){
+        } else if (call.method.equals("setAppId")) {
             setAppId(call.argument("appId"));
-        }else if (call.method.equals("setEventUploadInterval")){
+        } else if (call.method.equals("setEventUploadInterval")) {
             Long timeMillis = call.argument("timeMillis");
-            if( timeMillis!=null){
+            if (timeMillis != null) {
                 setEventUploadInterval(timeMillis);
             }
-        }else if (call.method.equals("setEventForceUploadSize")){
+        } else if (call.method.equals("setEventForceUploadSize")) {
             Integer size = call.argument("size");
-            if (size!=null){
+            if (size != null) {
                 setEventForceUploadSize(size);
             }
-        }else if (call.method.equals("setProfileUploadInterval")){
+        } else if (call.method.equals("setProfileUploadInterval")) {
             Integer size = call.argument("size");
-            if (size!=null){
+            if (size != null) {
                 setProfileUploadInterval(size);
             }
-        }else if (call.method.equals("setProfileForceUploadSize")){
+        } else if (call.method.equals("setProfileForceUploadSize")) {
             Integer size = call.argument("size");
-            if (size!=null){
+            if (size != null) {
                 setProfileForceUploadSize(size);
             }
-        }else if (call.method.equals("setSessionTimeoutMillis")){
+        } else if (call.method.equals("setSessionTimeoutMillis")) {
             Long timeoutMillis = call.argument("timeoutMillis");
-            if (timeoutMillis!=null){
+            if (timeoutMillis != null) {
                 setSessionTimeoutMillis(timeoutMillis);
             }
-        }else if (call.method.equals("setMinAppActiveDuration")){
+        } else if (call.method.equals("setMinAppActiveDuration")) {
             Long minAppActiveDuration = call.argument("minAppActiveDuration");
-            if (minAppActiveDuration!=null){
+            if (minAppActiveDuration != null) {
                 setMinAppActiveDuration(minAppActiveDuration);
             }
-        }else if (call.method.equals("setMaxAppActiveDuration")){
+        } else if (call.method.equals("setMaxAppActiveDuration")) {
             Long maxAppActiveDuration = call.argument("maxAppActiveDuration");
-            if (maxAppActiveDuration!=null){
+            if (maxAppActiveDuration != null) {
                 setMaxAppActiveDuration(maxAppActiveDuration);
             }
-        }else if (call.method.equals("preInit")){
+        } else if (call.method.equals("preInit")) {
             preInit();
-        }else if (call.method.equals("init")){
+        } else if (call.method.equals("init")) {
             init();
-        }else if (call.method.equals("getGtcId")){
-            result.success( getGtcId());
-        }else if (call.method.equals("onEvent")){
-            String eventId = call.argument("eventId");
-            Map<String, Object> map = call.argument("jsonObject");
-            JSONObject jsonObject = new JSONObject();
-            for (Map.Entry<String, Object> entry : map.entrySet()) {
-                try {
-                    jsonObject.put(entry.getKey(),entry.getValue());
-                } catch (Exception e) {
-                    e.printStackTrace();
+        } else if (call.method.equals("getGtcId")) {
+            result.success(getGtcId());
+        } else if (call.method.equals("onBeginEvent")) {
+            try {
+                String eventId = call.argument("eventId");
+                Map<String, Object> map = call.argument("jsonObject");
+                if (map != null) {
+                    JSONObject jsonObject = new JSONObject();
+                    for (Map.Entry<String, Object> entry : map.entrySet()) {
+
+                        jsonObject.put(entry.getKey(), entry.getValue());
+
+                    }
+                    onBeginEvent(eventId, jsonObject);
+                } else {
+                    onBeginEvent(eventId, null);
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            onEvent(eventId,jsonObject);
-        }else if (call.method.equals("setProfile")){
-            Map<String, Object> map = call.argument("jsonObject");
-            JSONObject jsonObject = new JSONObject();
-            for (Map.Entry<String, Object> entry : map.entrySet()) {
-                try {
-                    jsonObject.put(entry.getKey(),entry.getValue());
-                } catch (Exception e) {
-                    e.printStackTrace();
+        } else if (call.method.equals("onEndEvent")) {
+            try {
+                String eventId = call.argument("eventId");
+                Map<String, Object> map = call.argument("jsonObject");
+                if (map != null) {
+                    JSONObject jsonObject = new JSONObject();
+                    for (Map.Entry<String, Object> entry : map.entrySet()) {
+                        jsonObject.put(entry.getKey(), entry.getValue());
+
+                    }
+                    onEndEvent(eventId, jsonObject);
+                } else {
+                    onEndEvent(eventId, null);
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            setProfile(jsonObject);
+
+        } else if (call.method.equals("onEvent")) {
+            try {
+                String eventId = call.argument("eventId");
+                Map<String, Object> map = call.argument("jsonObject");
+                if (map != null) {
+                    JSONObject jsonObject = new JSONObject();
+                    for (Map.Entry<String, Object> entry : map.entrySet()) {
+                        jsonObject.put(entry.getKey(), entry.getValue());
+                    }
+                    onEvent(eventId, jsonObject);
+                } else {
+                    onEvent(eventId, null);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else if (call.method.equals("setProfile")) {
+            try {
+                Map<String, Object> map = call.argument("jsonObject");
+                JSONObject jsonObject = new JSONObject();
+                for (Map.Entry<String, Object> entry : map.entrySet()) {
+                    jsonObject.put(entry.getKey(), entry.getValue());
+                }
+                setProfile(jsonObject);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
             result.notImplemented();
         }
     }
+
 
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
         channel.setMethodCallHandler(null);
     }
 
-
     private void setDebugEnable(boolean debugEnable) {
         Log.d(TAG, "setDebugEnable: " + debugEnable);
-        try{
+        try {
             GsConfig.setDebugEnable(debugEnable);
-        }catch (Throwable e){
+        } catch (Throwable e) {
             e.printStackTrace();
         }
     }
@@ -188,18 +230,37 @@ public class GetuiIdoSdkFlutterPlugin implements FlutterPlugin, MethodCallHandle
             }
         });
         GsManager.getInstance().init(fContext);
-
     }
-
 
 
     private String getGtcId() {
-      return  GsManager.getInstance().getGtcId();
+        return GsManager.getInstance().getGtcId();
     }
 
     private void onEvent(String eventId, JSONObject jsonObject) {
-        GsManager.getInstance().onEvent(eventId, jsonObject);
+        if (jsonObject == null) {
+            GsManager.getInstance().onEvent(eventId);
+        } else {
+            GsManager.getInstance().onEvent(eventId, jsonObject);
+        }
     }
+
+    private void onBeginEvent(String eventId, JSONObject jsonObject) {
+        if (jsonObject == null) {
+            GsManager.getInstance().onBeginEvent(eventId);
+        } else {
+            GsManager.getInstance().onBeginEvent(eventId, jsonObject);
+        }
+    }
+
+    private void onEndEvent(String eventId, JSONObject jsonObject) {
+        if (jsonObject == null) {
+            GsManager.getInstance().onEndEvent(eventId);
+        } else {
+            GsManager.getInstance().onEndEvent(eventId, jsonObject);
+        }
+    }
+
 
     private void setProfile(JSONObject jsonObject) {
         GsManager.getInstance().setProfile(jsonObject);

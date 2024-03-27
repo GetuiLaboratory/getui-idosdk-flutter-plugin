@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+
 typedef Future<dynamic> EventHandler(String res);
 
 class IdoFlutter {
@@ -45,7 +46,7 @@ class IdoFlutter {
     }
   }
 
-  void onEvent(String eventId, Map<String, Object> map) {
+  void onEvent(String eventId, Map<String, dynamic>? map) {
     if (Platform.isAndroid) {
       _channel.invokeMethod('onEvent', {"eventId": eventId, "jsonObject": map});
     } else {
@@ -53,7 +54,22 @@ class IdoFlutter {
     }
   }
 
-  void setProfile(Map<String, Object> map) {
+  void onBeginEvent(String key, Map<String, dynamic>? map) {
+    if (Platform.isAndroid) {
+      _channel.invokeMethod('onBeginEvent', {"eventId": key, "jsonObject": map});
+    } else {
+      _channel.invokeMethod('onBeginEvent', {"eventId": key, "jsonObject": map});
+    }
+  }
+  void onEndEvent(String key, Map<String, dynamic>? map) {
+    if (Platform.isAndroid) {
+      _channel.invokeMethod('onEndEvent', {"eventId": key, "jsonObject": map});
+    } else {
+      _channel.invokeMethod('onEndEvent', {"eventId": key, "jsonObject": map});
+    }
+  }
+
+  void setProfile(Map<String, dynamic> map) {
     if (Platform.isAndroid) {
       _channel.invokeMethod('setProfile', {"jsonObject": map});
     } else {
@@ -61,8 +77,9 @@ class IdoFlutter {
     }
   }
 
-  void addEventHandler(
-      {required EventHandler initIdoSdkCallBack}) {
+
+
+  void addEventHandler({required EventHandler initIdoSdkCallBack}) {
     _initIdoSdkCallBack = initIdoSdkCallBack;
     _channel.setMethodCallHandler(_handleMethod);
   }
