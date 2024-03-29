@@ -5,7 +5,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:idoflutter/idoflutter.dart';
-
+import 'dart:io';
 void main() {
   runApp(const MyApp());
 }
@@ -27,7 +27,8 @@ class _MyAppState extends State<MyApp> {
   final TextEditingController _controllerKeyCount = TextEditingController();
   final TextEditingController _controllerValueCount = TextEditingController();
   final TextEditingController _controllerKeyProperty = TextEditingController();
-  final TextEditingController _controllerValueProperty = TextEditingController();
+  final TextEditingController _controllerValueProperty =
+      TextEditingController();
 
   @override
   void initState() {
@@ -55,13 +56,14 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       _platformVersion = platformVersion;
     });
-
-    IdoFlutter().addEventHandler(initIdoSdkCallBack: (String gtcId) async {
-      print("flutter initIdoSdkCallBack: $gtcId");
-      setState(() {
-        _initIdoSdkResult = gtcId;
+    if(Platform.isAndroid){
+      IdoFlutter().addEventHandler(initIdoSdkCallBack: (String gtcId) async {
+        print("flutter initIdoSdkCallBack: $gtcId");
+        setState(() {
+          _initIdoSdkResult = gtcId;
+        });
       });
-    });
+    }
   }
 
   @override
@@ -81,16 +83,16 @@ class _MyAppState extends State<MyApp> {
                     onPressed: () {
                       IdoFlutter().setDebugEnable(true);
                     },
-                    child: const Text('开启开发者模式，上线请关闭')
-                ),
+                    child: const Text('开启开发者模式，上线请关闭')),
               ]),
               Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: ()  {
                         IdoFlutter().initIdoSdk("5xpxEg5qvI9PNGH2kQAia2");
+                        getGtcId();
                       },
                       child: const Text('初始化'),
                     ),
@@ -117,8 +119,7 @@ class _MyAppState extends State<MyApp> {
                       padding: EdgeInsets.all(4.0),
                       child: TextField(
                         controller: _controllerKeyTime,
-                        decoration: const InputDecoration(
-                            hintText: "请输入 Key"),
+                        decoration: const InputDecoration(hintText: "请输入 Key"),
                       ),
                     ),
                   ),
@@ -127,8 +128,8 @@ class _MyAppState extends State<MyApp> {
                       padding: const EdgeInsets.all(4.0),
                       child: TextField(
                         controller: _controllerValueTime,
-                        decoration: const InputDecoration(
-                            hintText: "请输入 Value"),
+                        decoration:
+                            const InputDecoration(hintText: "请输入 Value"),
                       ),
                     ),
                   ),
@@ -139,21 +140,21 @@ class _MyAppState extends State<MyApp> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        eventBegin(context);
+                        onBeginEvent(context);
                       },
                       child: const Text("事件开始",
                           style:
-                          TextStyle(textBaseline: TextBaseline.alphabetic)),
+                              TextStyle(textBaseline: TextBaseline.alphabetic)),
                     ),
                   ),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        eventEnd();
+                        onEndEvent();
                       },
                       child: const Text("事件结束",
                           style:
-                          TextStyle(textBaseline: TextBaseline.alphabetic)),
+                              TextStyle(textBaseline: TextBaseline.alphabetic)),
                     ),
                   ),
                 ],
@@ -179,8 +180,7 @@ class _MyAppState extends State<MyApp> {
                       padding: const EdgeInsets.all(4.0),
                       child: TextField(
                         controller: _controllerKeyCount,
-                        decoration: const InputDecoration(
-                            hintText: "请输入 Key"),
+                        decoration: const InputDecoration(hintText: "请输入 Key"),
                       ),
                     ),
                   ),
@@ -189,8 +189,8 @@ class _MyAppState extends State<MyApp> {
                       padding: const EdgeInsets.all(4.0),
                       child: TextField(
                         controller: _controllerValueCount,
-                        decoration: const InputDecoration(
-                            hintText: "请输入 Value"),
+                        decoration:
+                            const InputDecoration(hintText: "请输入 Value"),
                       ),
                     ),
                   ),
@@ -210,8 +210,7 @@ class _MyAppState extends State<MyApp> {
                       padding: const EdgeInsets.all(4.0),
                       child: TextField(
                         controller: _controllerKeyProperty,
-                        decoration: const InputDecoration(
-                            hintText: "请输入 Key"),
+                        decoration: const InputDecoration(hintText: "请输入 Key"),
                       ),
                     ),
                   ),
@@ -220,8 +219,8 @@ class _MyAppState extends State<MyApp> {
                       padding: const EdgeInsets.all(4.0),
                       child: TextField(
                         controller: _controllerValueProperty,
-                        decoration: const InputDecoration(
-                            hintText: "请输入 Value"),
+                        decoration:
+                            const InputDecoration(hintText: "请输入 Value"),
                       ),
                     ),
                   ),
@@ -241,7 +240,7 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  void eventBegin(BuildContext context) {
+  void onBeginEvent(BuildContext context) {
     var eventId = _controllerEventIDTime.text;
     if (eventId.isEmpty) {
       print("请设置自定义事件 Event ID");
@@ -261,7 +260,7 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  void eventEnd() {
+  void onEndEvent() {
     var eventId = _controllerEventIDTime.text;
     if (eventId.isEmpty) {
       print("请设置自定义事件 Event ID");
@@ -295,9 +294,9 @@ class _MyAppState extends State<MyApp> {
     var value = _controllerValueCount.text;
     if (value.isNotEmpty && key.isNotEmpty) {
       Map<String, dynamic> map = {key: value};
-      IdoFlutter().onEvent(eventId, map);
+      IdoFlutter().trackCountEvent(eventId, map);
     } else {
-      IdoFlutter().onEvent(eventId, null);
+      IdoFlutter().trackCountEvent(eventId, null);
     }
   }
 
@@ -310,4 +309,11 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+  Future<void> getGtcId() async {
+    String? gtcId = await IdoFlutter().getGtcId();
+    print("flutter initIdoSdkCallBack: $gtcId");
+    setState(() {
+      _initIdoSdkResult = gtcId!;
+    });
+  }
 }

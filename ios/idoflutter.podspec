@@ -3,9 +3,9 @@
 # Run `pod lib lint getui_idosdk_flutter_plugin.podspec` to validate before publishing.
 #
 Pod::Spec.new do |s|
-  s.name             = 'getui_idosdk_flutter_plugin'
+  s.name             = 'idoflutter'
   s.version          = '0.0.1'
-  s.summary          = 'A new Flutter plugin project.'
+  s.summary          = 'idosdk plugin flutter'
   s.description      = <<-DESC
 A new Flutter plugin project.
                        DESC
@@ -15,7 +15,10 @@ A new Flutter plugin project.
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.platform = :ios, '11.0'
+  s.dependency 'GTCommonSDK'
+  s.dependency 'GCIDOSDK'
+  s.ios.deployment_target = '11.0'
+  s.static_framework = true
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }

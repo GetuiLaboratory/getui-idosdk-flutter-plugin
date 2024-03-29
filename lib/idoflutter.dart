@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
@@ -22,20 +23,18 @@ class IdoFlutter {
     }
   }
 
-  void initIdoSdk(String appId) {
+  void initIdoSdk(String appId, String channelId) {
     if (Platform.isAndroid) {
       _channel.invokeMethod('init');
     } else {
-      _channel.invokeMethod('init', {"appId": appId});
+      _channel.invokeMethod('init', {"appId": appId, "channelId": channelId});
     }
   }
 
   void preInitIdoSdk() {
     if (Platform.isAndroid) {
       _channel.invokeMethod('preInit');
-    } else {
-      _channel.invokeMethod('preInit');
-    }
+    } else {}
   }
 
   Future<String?> getGtcId() async {
@@ -46,21 +45,26 @@ class IdoFlutter {
     }
   }
 
-  void onEvent(String eventId, Map<String, dynamic>? map) {
+  void trackCountEvent(String eventId, Map<String, dynamic>? map) {
     if (Platform.isAndroid) {
-      _channel.invokeMethod('onEvent', {"eventId": eventId, "jsonObject": map});
+      _channel.invokeMethod(
+          'trackCountEvent', {"eventId": eventId, "jsonObject": map});
     } else {
-      _channel.invokeMethod('onEvent', {"eventId": eventId, "jsonObject": map});
+      _channel.invokeMethod(
+          'trackCountEvent', {"eventId": eventId, "jsonObject": map});
     }
   }
 
   void onBeginEvent(String key, Map<String, dynamic>? map) {
     if (Platform.isAndroid) {
-      _channel.invokeMethod('onBeginEvent', {"eventId": key, "jsonObject": map});
+      _channel
+          .invokeMethod('onBeginEvent', {"eventId": key, "jsonObject": map});
     } else {
-      _channel.invokeMethod('onBeginEvent', {"eventId": key, "jsonObject": map});
+      _channel
+          .invokeMethod('onBeginEvent', {"eventId": key, "jsonObject": map});
     }
   }
+
   void onEndEvent(String key, Map<String, dynamic>? map) {
     if (Platform.isAndroid) {
       _channel.invokeMethod('onEndEvent', {"eventId": key, "jsonObject": map});
@@ -77,8 +81,6 @@ class IdoFlutter {
     }
   }
 
-
-
   void addEventHandler({required EventHandler initIdoSdkCallBack}) {
     _initIdoSdkCallBack = initIdoSdkCallBack;
     _channel.setMethodCallHandler(_handleMethod);
@@ -92,5 +94,81 @@ class IdoFlutter {
       default:
         throw UnsupportedError("Unrecongnized Event");
     }
+  }
+
+  void setInstallChannel(String channel) {
+    if (Platform.isAndroid) {
+      _channel.invokeMethod('setInstallChannel', {"channel": channel});
+    } else {}
+  }
+
+  void setAppId(String appId) {
+    if (Platform.isAndroid) {
+      _channel.invokeMethod('setAppId', {"appId": appId});
+    } else {}
+  }
+
+  void setEventUploadInterval(Long timeMillis) {
+    if (Platform.isAndroid) {
+      _channel
+          .invokeMethod('setEventUploadInterval', {"timeMillis": timeMillis});
+    } else {
+      _channel
+          .invokeMethod('setEventUploadInterval', {"timeMillis": timeMillis});
+    }
+  }
+
+  void setEventForceUploadSize(int size) {
+    if (Platform.isAndroid) {
+      _channel.invokeMethod('setEventForceUploadSize', {"size": size});
+    } else {
+      _channel.invokeMethod('setEventForceUploadSize', {"size": size});
+    }
+  }
+
+  void setProfileUploadInterval(Long timeMillis) {
+    if (Platform.isAndroid) {
+      _channel
+          .invokeMethod('setProfileUploadInterval', {"timeMillis": timeMillis});
+    } else {
+      _channel
+          .invokeMethod('setProfileUploadInterval', {"timeMillis": timeMillis});
+    }
+  }
+
+  void setProfileForceUploadSize(int size) {
+    if (Platform.isAndroid) {
+      _channel.invokeMethod('setProfileForceUploadSize', {"size": size});
+    } else {
+      _channel.invokeMethod('setProfileForceUploadSize', {"size": size});
+    }
+  }
+
+  void setSessionTimeoutMillis(Long timeoutMillis) {
+    if (Platform.isAndroid) {
+      _channel.invokeMethod(
+          'setSessionTimeoutMillis', {"timeoutMillis": timeoutMillis});
+    } else {}
+  }
+
+  void setMinAppActiveDuration(Long minAppActiveDuration) {
+    if (Platform.isAndroid) {
+      _channel.invokeMethod('setMinAppActiveDuration',
+          {"minAppActiveDuration": minAppActiveDuration});
+    } else {}
+  }
+
+  void setMaxAppActiveDuration(Long maxAppActiveDuration) {
+    if (Platform.isAndroid) {
+      _channel.invokeMethod('setMaxAppActiveDuration',
+          {"maxAppActiveDuration": maxAppActiveDuration});
+    } else {}
+  }
+
+  void setApplicationGroupIdentifier(String identifier) {
+    if (Platform.isIOS) {
+      _channel.invokeMethod(
+          'setApplicationGroupIdentifier', {"identifier": identifier});
+    } else {}
   }
 }
