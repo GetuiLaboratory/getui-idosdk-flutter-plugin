@@ -160,3 +160,13 @@ IdoFlutter().setProfileForceUploadSize(int size);
 IdoFlutter().setApplicationGroupIdentifier(String identifier) 
 
 ```
+
+
+### 3.2 Android demo
+
+https://github.com/GetuiLaboratory/getui-idosdk-flutter-plugin/tree/main/example
+
+
+### 3.3 IOS demo
+
+https://github.com/GetuiLaboratory/getui-idosdk-flutter-plugin/tree/main/example
