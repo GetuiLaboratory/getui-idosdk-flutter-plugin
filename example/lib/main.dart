@@ -91,7 +91,7 @@ class _MyAppState extends State<MyApp> {
                   children: <Widget>[
                     ElevatedButton(
                       onPressed: ()  {
-                        IdoFlutter().initIdoSdk("5xpxEg5qvI9PNGH2kQAia2");
+                        IdoFlutter().initIdoSdk("5xpxEg5qvI9PNGH2kQAia2","flutter");
                         getGtcId();
                       },
                       child: const Text('初始化'),
