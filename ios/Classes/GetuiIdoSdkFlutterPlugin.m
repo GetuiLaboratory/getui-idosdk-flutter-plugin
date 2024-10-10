@@ -1,7 +1,7 @@
 #import "GetuiIdoSdkFlutterPlugin.h"
 #import <GTCountSDK/GTCountSDK.h>
 
-@interface GetuiIdoSdkFlutterPlugin () {
+@interface GetuiIdoSdkFlutterPlugin ()<GTCountSDKDelegate> {
     BOOL _started;
     NSDictionary *_launchOptions;
     NSDictionary *_launchNotification;
@@ -62,23 +62,24 @@
     NSDictionary *ConfigurationInfo = call.arguments;
     NSString *appId = ConfigurationInfo[@"appId"];
     NSString *channelId = ConfigurationInfo[@"channelId"];
-    [GTCountSDK startSDKWithAppId:appId withChannelId:channelId];
-    NSLog(@"startSdk,appId : %@", appId);
+    
+    NSLog(@"\n>>>IDOSDK startSdk, appId:%@", appId);
+    [GTCountSDK startSDKWithAppId:appId withChannelId:channelId delegate:self];
 }
 
 
 - (void)setDebugEnable:(FlutterMethodCall *)call result:(FlutterResult)result {
     NSDictionary *ConfigurationInfo = call.arguments;
     BOOL debugEnable = ConfigurationInfo[@"debugEnable"];
+    NSLog(@"\n>>>IDOSDK setDebugEnable:%@", @(debugEnable));
     [GTCountSDK setDebugEnable:debugEnable];
-    NSLog(@"setDebugEnable,debugEnable : %@", @(debugEnable));
 }
 
 - (void)onBeginEvent:(FlutterMethodCall *)call result:(FlutterResult)result {
     NSDictionary *ConfigurationInfo = call.arguments;
     NSString *eventId = ConfigurationInfo[@"eventId"];
+    NSLog(@"\n>>>IDOSDK onBeginEvent,eventId : %@", eventId);
     [GTCountSDK trackCustomKeyValueEventBegin:eventId];
-    NSLog(@"onBeginEvent,eventId : %@", eventId);
 }
 
 - (void)onEndEvent:(FlutterMethodCall *)call result:(FlutterResult)result {
@@ -86,13 +87,14 @@
     NSString *eventId = ConfigurationInfo[@"eventId"];
     NSMutableDictionary *dictionary = ConfigurationInfo[@"jsonObject"];
     NSString *ext = ConfigurationInfo[@"withExt"];
+    
+    NSLog(@"\n>>>IDOSDK eventEndWithArg, eventId:%@, args:%@", eventId, dictionary);
     if (dictionary && [dictionary isKindOfClass:[NSMutableDictionary class]] &&
         dictionary.count > 0) {
         [GTCountSDK trackCustomKeyValueEventEnd:eventId withArgs:dictionary withExt:ext];
     } else {
         [GTCountSDK trackCustomKeyValueEventEnd:eventId withArgs:nil withExt:ext];
     }
-    NSLog(@"eventEndWithArg,eventId : %@, args : %@", eventId, dictionary);
 }
 
 - (void)trackCountEvent:(FlutterMethodCall *)call result:(FlutterResult)result {
@@ -100,34 +102,35 @@
     NSString *eventId = ConfigurationInfo[@"eventId"];
     NSMutableDictionary *dictionary = ConfigurationInfo[@"jsonObject"];
     NSString *ext = ConfigurationInfo[@"withExt"];
+    
+    NSLog(@"\n>>>IDOSDK trackCountEvent,eventId : %@, args : %@", eventId, dictionary);
     if (dictionary && [dictionary isKindOfClass:[NSMutableDictionary class]] &&
         dictionary.count > 0) {
         [GTCountSDK trackCountEvent:eventId withArgs:dictionary withExt:ext];
     } else {
         [GTCountSDK trackCountEvent:eventId withArgs:nil withExt:ext];
     }
-    NSLog(@"trackCountEvent,eventId : %@, args : %@", eventId, dictionary);
 }
 
 - (void)setProfile:(FlutterMethodCall *)call result:(FlutterResult)result {
     NSDictionary *ConfigurationInfo = call.arguments;
     NSMutableDictionary *dictionary = ConfigurationInfo[@"jsonObject"];
     NSString *ext = ConfigurationInfo[@"withExt"];
+    NSLog(@"\n>>>IDOSDK clickProfileSet, property:%@", dictionary);
     [GTCountSDK setProfile:dictionary withExt:ext];
-    NSLog(@"clickProfileSet, property : %@", dictionary);
 }
 
 - (void)getGtcId:(FlutterMethodCall *)call result:(FlutterResult)result {
     NSString *gtcid = [GTCountSDK gtcid];
+    NSLog(@"\n>>>IDOSDK getGtcId:%@", gtcid);
     result(gtcid);
-    NSLog(@"getGtcId, gtcid : %@", gtcid);
 }
 
 - (void)setApplicationGroupIdentifier:(FlutterMethodCall *)call result:(FlutterResult)result {
     NSDictionary *ConfigurationInfo = call.arguments;
     NSString *identifier = ConfigurationInfo[@"identifier"];
+    NSLog(@"\n>>>IDOSDK setApplicationGroupIdentifier, identifier : %@", identifier);
     [GTCountSDK setApplicationGroupIdentifier:identifier];
-    NSLog(@"setApplicationGroupIdentifier, identifier : %@", identifier);
 }
 
 
@@ -136,8 +139,8 @@
     NSNumber *timeMillisNumber = ConfigurationInfo[@"timeMillis"];
     if (timeMillisNumber != nil && [timeMillisNumber isKindOfClass:[NSNumber class]]) {
         NSInteger timeMillis = [timeMillisNumber integerValue];
+        NSLog(@"\n>>>IDOSDK setEventUploadInterval, timeMillis : %ld", (long) timeMillis);
         [GTCountSDK sharedInstance].profileUploadInterval = timeMillis;
-        NSLog(@"setEventUploadInterval, timeMillis : %ld", (long) timeMillis);
     }
 }
 
@@ -146,8 +149,8 @@
     NSNumber *size = ConfigurationInfo[@"size"];
     if (size != nil && [size isKindOfClass:[NSNumber class]]) {
         NSInteger _size = [size integerValue];
+        NSLog(@"\n>>>IDOSDK setEventUploadInterval, size : %ld", _size);
         [GTCountSDK sharedInstance].eventForceUploadSize = _size;
-        NSLog(@"setEventUploadInterval, size : %ld", _size);
     }
 }
 
@@ -156,8 +159,8 @@
     NSNumber *timeMillisNumber = ConfigurationInfo[@"timeMillis"];
     if (timeMillisNumber != nil && [timeMillisNumber isKindOfClass:[NSNumber class]]) {
         NSInteger timeMillis = [timeMillisNumber integerValue];
+        NSLog(@"\n>>>IDOSDK setProfileUploadInterval, timeMillis : %ld", (long) timeMillis);
         [GTCountSDK sharedInstance].profileUploadInterval = timeMillis;
-        NSLog(@"setProfileUploadInterval, timeMillis : %ld", (long) timeMillis);
     }
 }
 
@@ -166,9 +169,15 @@
     NSNumber *size = ConfigurationInfo[@"size"];
     if (size != nil && [size isKindOfClass:[NSNumber class]]) {
         NSInteger _size = [size integerValue];
+        NSLog(@"\n>>>IDOSDK setProfileForceUploadSize, size : %ld", _size);
         [GTCountSDK sharedInstance].profileForceUploadSize = _size;
-        NSLog(@"setProfileForceUploadSize, size : %ld", _size);
     }
 }
 
+//MARK: - Delegate
+
+- (void)GTCountSDKDidReceiveGtcid:(NSString *)gtcid error:(NSError*)error {
+    NSLog(@"\n>>>IDOSDK GTCountSDKDidReceiveGtcid, gtcid:%@ error:%@", gtcid, error);
+    [_channel invokeMethod:@"gtcIdCallback" arguments:gtcid?:@""];
+}
 @end
