@@ -79,6 +79,7 @@ import 'package:idoflutter/idoflutter.dart';
 * 初始化
 * appId: appid（ios)
 * channelID: channel（ios)
+* iOS环境下，IDO SDK>=2.0.7.0，会有gtcIdCallback回调
 */
 IdoFlutter().initIdoSdk("5xpxEg5qvI9PNGH2kQAia2","flutter");
 
@@ -169,4 +170,6 @@ https://github.com/GetuiLaboratory/getui-idosdk-flutter-plugin/tree/main/example
 
 ### 3.3 IOS demo
 
+- GCIDOSDK>=2.0.7.0版本，需要使用最新插件版本
+- GCIDOSDK<2.0.7.0版本，需要使用插件版本0.0.1
 https://github.com/GetuiLaboratory/getui-idosdk-flutter-plugin/tree/main/example
