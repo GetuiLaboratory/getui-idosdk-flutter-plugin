@@ -27,9 +27,11 @@ import io.flutter.plugin.common.MethodChannel.Result;
  */
 public class GetuiIdoSdkFlutterPlugin implements FlutterPlugin, MethodCallHandler {
     String TAG = "GetuiIdosdkFlutterPlugin";
-    /// The MethodChannel that will the communication between Flutter and native Android
+    /// The MethodChannel that will the communication between Flutter and native
+    /// Android
     ///
-    /// This local reference serves to register the plugin with the Flutter Engine and unregister it
+    /// This local reference serves to register the plugin with the Flutter Engine
+    /// and unregister it
     /// when the Flutter Engine is detached from the Activity
     private MethodChannel channel;
     private Context fContext;
@@ -55,19 +57,19 @@ public class GetuiIdoSdkFlutterPlugin implements FlutterPlugin, MethodCallHandle
         } else if (call.method.equals("setAppId")) {
             setAppId(call.argument("appId"));
         } else if (call.method.equals("setEventUploadInterval")) {
-            setEventUploadInterval(call,result);
+            setEventUploadInterval(call, result);
         } else if (call.method.equals("setEventForceUploadSize")) {
-            setEventForceUploadSize(call,result);
+            setEventForceUploadSize(call, result);
         } else if (call.method.equals("setProfileUploadInterval")) {
-            setProfileUploadInterval(call,result);
+            setProfileUploadInterval(call, result);
         } else if (call.method.equals("setProfileForceUploadSize")) {
-            setProfileForceUploadSize(call,result);
+            setProfileForceUploadSize(call, result);
         } else if (call.method.equals("setSessionTimeoutMillis")) {
-            setSessionTimeoutMillis(call,result);
+            setSessionTimeoutMillis(call, result);
         } else if (call.method.equals("setMinAppActiveDuration")) {
-            setMinAppActiveDuration(call,result);
+            setMinAppActiveDuration(call, result);
         } else if (call.method.equals("setMaxAppActiveDuration")) {
-            setMaxAppActiveDuration(call,result);
+            setMaxAppActiveDuration(call, result);
         } else if (call.method.equals("preInit")) {
             preInit();
         } else if (call.method.equals("init")) {
@@ -75,18 +77,21 @@ public class GetuiIdoSdkFlutterPlugin implements FlutterPlugin, MethodCallHandle
         } else if (call.method.equals("getGtcId")) {
             result.success(getGtcId());
         } else if (call.method.equals("onBeginEvent")) {
-            onBeginEvent(call,result);
+            onBeginEvent(call, result);
         } else if (call.method.equals("onEndEvent")) {
-            onEndEvent(call,result);
+            onEndEvent(call, result);
         } else if (call.method.equals("trackCountEvent")) {
-            onEvent(call,result);
+            onEvent(call, result);
         } else if (call.method.equals("setProfile")) {
-            setProfile(call,result);
+            setProfile(call, result);
+        } else if (call.method.equals("onBridgeEvent")) {
+            result.success(onBridgeEvent(call, result));
+        } else if (call.method.equals("registerEventProperties")) {
+            registerEventProperties(call, result);
         } else {
             result.notImplemented();
         }
     }
-
 
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
@@ -149,7 +154,6 @@ public class GetuiIdoSdkFlutterPlugin implements FlutterPlugin, MethodCallHandle
 
     }
 
-
     private void setMinAppActiveDuration(MethodCall call, Result result) {
         Long minAppActiveDuration = call.argument("minAppActiveDuration");
         if (minAppActiveDuration != null) {
@@ -179,7 +183,6 @@ public class GetuiIdoSdkFlutterPlugin implements FlutterPlugin, MethodCallHandle
         });
         GsManager.getInstance().init(fContext);
     }
-
 
     private String getGtcId() {
         return GsManager.getInstance().getGtcId();
@@ -239,7 +242,6 @@ public class GetuiIdoSdkFlutterPlugin implements FlutterPlugin, MethodCallHandle
         }
     }
 
-
     private void setProfile(MethodCall call, Result result) {
         try {
             Map<String, Object> map = call.argument("jsonObject");
@@ -259,6 +261,26 @@ public class GetuiIdoSdkFlutterPlugin implements FlutterPlugin, MethodCallHandle
         msg.what = 0;
         msg.obj = gtcId;
         flutterHandler.sendMessage(msg);
+    }
+
+    private void registerEventProperties(MethodCall call, Result result) {
+        try {
+            Map<String, Object> map = call.argument("properties");
+            if (map != null) {
+                JSONObject jsonObject = new JSONObject();
+                for (Map.Entry<String, Object> entry : map.entrySet()) {
+                    jsonObject.put(entry.getKey(), entry.getValue());
+                }
+                GsManager.getInstance().registerEventProperties(jsonObject);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String onBridgeEvent(MethodCall call, Result result) {
+        String data = call.argument("data");
+        return GsManager.getInstance().onBridgeEvent(data);
     }
 
     private static Handler flutterHandler = new Handler(Looper.getMainLooper()) {

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="always" name="referrer">
+    <title>demo</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            height: 300px;
+        }
+
+        p {
+            font-size: 14px;
+        }
+
+        .button {
+            width: 100px;
+            height: 48px;
+            margin-left: 20px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="./gsido-h5-min.js"></script>
+</head>
+
+<body>
+    <h3> demo 演示</h3>
+    <p>
+        <text class="title">appid: </text>
+        <text id="appid" class="title">xXmjbbab3b5F1m7wAYZoG2</text>
+    </p>
+    <p>
+        <text id="gtcid">gtcid: </text>
+        <text id="cid" class="title"></text>
+        <br/>
+        <text id="log">log:</text>
+    </p>
+    <p><input type="button" id="event" value="event"></button>
+    </p>
+    <p><input type="button" id="beginEvent" value="beginEvent"></button>
+    </p>
+    <p><input type="button" id="endEvent" value="endEvent"></button>
+    </p>
+    <p><input type="button" id="setProfile" value="setProfile"></button>
+    </p>
+    <p><a href="https://www.baidu.com">jump</a>
+    </p>
+    <p><a href="javascript:void(0);" onclick="goToB()">跳转到B页面</a></p>
+</body>
+
+</html>
+<script>
+
+    // h5 预调用
+    // window.GSIDOLazyActions = []
+    // window.GSIDOLazyActions.push({key:'setDebugEnable', args:[9]})
+
+    // wx 预调用
+    // wx.GSIDOLazyActions = []
+    // wx.GSIDOLazyActions.push({key:'setDebugEnable', args:[9]})
+
+    console.log('hi')
+    console.log(GsIdo);
+    GsIdo.setDebugEnable(9);
+    GsIdo.init({
+        //统计sdk appid
+        // gsAppid: 'xXmjbbab3b5F1m7wAYZoG2'
+        gsAppid: 'A888n2pctF4BRpX7km8888'
+    });
+
+    $('#gtcid').text("gtcid:"+GsIdo.gtcid())
+    $('#event').click(function () {
+        GsIdo.onEvent({
+            //事件id
+            id: 'id000中文',
+            //自定义属性，注意value的类型只能是string|number|Date|boolean
+            attrs: new Map([
+                ['key_string', 'this is a string我是中文'],
+                ['key_number', 111],
+                ['key_date', new Date()],
+                ['key_boolean', true]
+            ])
+        })
+    });
+
+    $('#beginEvent').click(function () {
+        GsIdo.onBeginEvent({
+            //事件id
+            id: 'event_2',
+            //自定义属性，注意value的类型只能是string|number|Date|boolean
+            attrs: new Map([
+                ['key_string', 'event_2']
+            ])
+        });
+    });
+    $('#endEvent').click(function () {
+        GsIdo.onEndEvent({
+            id: 'event_2'
+        });
+    });
+    $('#setProfile').click(function () {
+        let map = new Map();
+        map.set("name", "hahalee");
+        map.set("banana", 5);
+        GsIdo.setProfile({
+            attrs: map,
+            ext: "this is ext"
+        });
+    });
+    $("#log").text("cookie:"+document.cookie)
+
+    // $('#jump').click(function(){
+    //   window.url
+    // });
+
+    // $("#state").text(`onPageLoad ===> focus: ${document.hasFocus()} -- visibilityState: ${document.visibilityState}`)
+    // document.addEventListener('visibilitychange', function() {
+    //     $("#state").text(`onVisibilitychange ===> focus: ${document.hasFocus()} -- visibilityState: ${document.visibilityState}`)
+    // })
+
+    // window.addEventListener('focus', () => {
+    //     //分屏的情况
+    //     $("#state").text(`onFocus ===> focus: ${document.hasFocus()} -- visibilityState: ${document.visibilityState}`)
+    //     GTIDO.enableSocket(true)
+    // })
+
+    // window.addEventListener('blur', () => {
+    //     $("#state").text(`onBlur ===> focus: ${document.hasFocus()} -- visibilityState: ${document.visibilityState}`)
+    // })
+
+    function goToB() {
+        // window.location.href = './testH5_2.html';
+        window.flutter_inappwebview.callHandler('flutterHandler', 'Message from H5')
+            // .then(function(result) {
+            //         console.log('Received result from Flutter1: ' + result);
+            //     });
+    }
+    window.addEventListener('message', function(event) {
+            console.log('H5 Received message : ' + event.data);
+            // 在这里处理从 Flutter 接收到的消息
+            // 弹窗
+            alert(event.data);
+        });
+</script>

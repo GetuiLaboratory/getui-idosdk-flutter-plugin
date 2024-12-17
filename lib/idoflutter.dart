@@ -4,9 +4,18 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 
-typedef Future<dynamic> EventHandler(String res);
+typedef EventHandler = Future<dynamic> Function(String res);
 
 class IdoFlutter {
+  // 单例模式
+  static final IdoFlutter _singleton = IdoFlutter._internal();
+  factory IdoFlutter() {
+    return _singleton;
+  }
+  IdoFlutter._internal();
+
+  static IdoFlutter get instance => _singleton;
+
   static const MethodChannel _channel = MethodChannel('IdoFlutter');
   late EventHandler _initIdoSdkCallBack;
 
@@ -25,6 +34,8 @@ class IdoFlutter {
 
   void initIdoSdk(String appId, String channelId) {
     if (Platform.isAndroid) {
+      setAppId(appId);
+      setInstallChannel(channelId);
       _channel.invokeMethod('init');
     } else {
       _channel.invokeMethod('init', {"appId": appId, "channelId": channelId});
@@ -39,9 +50,9 @@ class IdoFlutter {
 
   Future<String?> getGtcId() async {
     if (Platform.isAndroid) {
-      return _channel.invokeMethod('getGtcId');
+      return await _channel.invokeMethod('getGtcId');
     } else {
-      return _channel.invokeMethod('getGtcId');
+      return await _channel.invokeMethod('getGtcId');
     }
   }
 

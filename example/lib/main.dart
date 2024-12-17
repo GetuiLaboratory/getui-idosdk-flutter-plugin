@@ -6,6 +6,7 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:idoflutter/idoflutter.dart';
 import 'dart:io';
+import 'WebViewPage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -58,7 +59,8 @@ class _MyAppState extends State<MyApp> {
       _platformVersion = platformVersion;
     });
     //if (Platform.isAndroid) {
-    IdoFlutter().addEventHandler(initIdoSdkCallBack: (String gtcId) async {
+    IdoFlutter.instance.addEventHandler(
+        initIdoSdkCallBack: (String gtcId) async {
       print("flutter initIdoSdkCallBack: $gtcId");
       setState(() {
         _initIdoSdkResult = gtcId;
@@ -85,7 +87,7 @@ class _MyAppState extends State<MyApp> {
                   Row(children: [
                     ElevatedButton(
                         onPressed: () {
-                          IdoFlutter().setDebugEnable(true);
+                          IdoFlutter.instance.setDebugEnable(true);
                         },
                         child: const Text('开启开发者模式，上线请关闭')),
                   ]),
@@ -95,7 +97,7 @@ class _MyAppState extends State<MyApp> {
                       children: <Widget>[
                         ElevatedButton(
                           onPressed: () {
-                            IdoFlutter().initIdoSdk(
+                            IdoFlutter.instance.initIdoSdk(
                                 "5xpxEg5qvI9PNGH2kQAia2", "flutter");
                             getGtcId();
                           },
@@ -245,6 +247,14 @@ class _MyAppState extends State<MyApp> {
                         style:
                             TextStyle(textBaseline: TextBaseline.alphabetic)),
                   ),
+                  Row(children: [
+                    ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context, MaterialPageRoute(builder: (context) => WebViewPage()));
+                        },
+                        child: const Text('跳转到webview')),
+                  ]),
                 ],
               ),
             )
@@ -268,9 +278,9 @@ class _MyAppState extends State<MyApp> {
     var value = _controllerValueTime.text;
     if (value.isNotEmpty) {
       Map<String, dynamic> map = {key: value};
-      IdoFlutter().onBeginEvent(eventId, map);
+      IdoFlutter.instance.onBeginEvent(eventId, map);
     } else {
-      IdoFlutter().onBeginEvent(eventId, null);
+      IdoFlutter.instance.onBeginEvent(eventId, null);
     }
   }
 
@@ -288,9 +298,9 @@ class _MyAppState extends State<MyApp> {
     var value = _controllerValueTime.text;
     if (value.isNotEmpty && key.isNotEmpty) {
       Map<String, dynamic> map = {key: value};
-      IdoFlutter().onEndEvent(eventId, map);
+      IdoFlutter.instance.onEndEvent(eventId, map);
     } else {
-      IdoFlutter().onEndEvent(eventId, null);
+      IdoFlutter.instance.onEndEvent(eventId, null);
     }
   }
 
@@ -308,9 +318,9 @@ class _MyAppState extends State<MyApp> {
     var value = _controllerValueCount.text;
     if (value.isNotEmpty && key.isNotEmpty) {
       Map<String, dynamic> map = {key: value};
-      IdoFlutter().trackCountEvent(eventId, map);
+      IdoFlutter.instance.trackCountEvent(eventId, map);
     } else {
-      IdoFlutter().trackCountEvent(eventId, null);
+      IdoFlutter.instance.trackCountEvent(eventId, null);
     }
   }
 
@@ -319,12 +329,12 @@ class _MyAppState extends State<MyApp> {
     var value = _controllerValueProperty.text;
     if (value.isNotEmpty && key.isNotEmpty) {
       Map<String, dynamic> map = {key: value};
-      IdoFlutter().setProfile(map);
+      IdoFlutter.instance.setProfile(map);
     }
   }
 
   Future<void> getGtcId() async {
-    String? gtcId = await IdoFlutter().getGtcId();
+    String? gtcId = await IdoFlutter.instance.getGtcId();
     print("flutter getGtcId: $gtcId");
     setState(() {
       _initIdoSdkResult = gtcId!;
