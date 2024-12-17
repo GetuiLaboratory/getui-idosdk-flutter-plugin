@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/IdoFlutter.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:idoflutter/idoflutter.dart';
 
 class WebViewPage extends StatefulWidget {
   @override
