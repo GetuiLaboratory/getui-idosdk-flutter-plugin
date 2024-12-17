@@ -184,10 +184,10 @@ class IdoFlutter {
   }
 
   Future<String?> onBridgeEvent(String data) async {
-    if (Platform.isAndroid) {
-      return await _channel.invokeMethod('onBridgeEvent', {"data": data});
-    } else {
-      return "";
-    }
+    // if (Platform.isAndroid) {
+    return await _channel.invokeMethod('onBridgeEvent', {"data": data});
+    // } else {
+    //   return "";
+    // }
   }
 }

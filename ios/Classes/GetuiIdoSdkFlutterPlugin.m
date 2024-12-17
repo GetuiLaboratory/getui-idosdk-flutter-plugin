@@ -53,6 +53,8 @@
         [self trackCountEvent:call result:result];
     } else if ([@"setProfile" isEqualToString:call.method]) {
         [self setProfile:call result:result];
+    } else if ([@"onBridgeEvent" isEqualToString:call.method]) {
+        [self onBridgeEvent:call result:result];
     } else {
         result(FlutterMethodNotImplemented);
     }
@@ -120,6 +122,15 @@
     [GTCountSDK setProfile:dictionary withExt:ext];
 }
 
+- (void)onBridgeEvent:(FlutterMethodCall *)call result:(FlutterResult)result {
+    NSDictionary *ConfigurationInfo = call.arguments;
+    NSString *dataStr = ConfigurationInfo[@"data"];
+    NSLog(@"\n>>>IDOSDK onBridgeEvent, data:%@", dataStr);
+    NSString *ret = [GTCountSDK onBridgeEvent:dataStr];
+    NSLog(@"\n>>>IDOSDK onBridgeEvent, return:%@", ret);
+    result(ret);
+}
+
 - (void)getGtcId:(FlutterMethodCall *)call result:(FlutterResult)result {
     NSString *gtcid = [GTCountSDK gtcid];
     NSLog(@"\n>>>IDOSDK getGtcId:%@", gtcid);
@@ -132,7 +143,6 @@
     NSLog(@"\n>>>IDOSDK setApplicationGroupIdentifier, identifier : %@", identifier);
     [GTCountSDK setApplicationGroupIdentifier:identifier];
 }
-
 
 - (void)setEventUploadInterval:(FlutterMethodCall *)call result:(FlutterResult)result {
     NSDictionary *ConfigurationInfo = call.arguments;
