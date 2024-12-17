@@ -184,9 +184,9 @@ class IdoFlutter {
   }
 
   void registerEventProperties(Map<String, dynamic> map) {
-    if (Platform.isIOS) {
+    // if (Platform.isIOS) {
       _channel.invokeMethod('registerEventProperties', {"properties": map});
-    } else {}
+    // } else {}
   }
 
   Future<String?> onBridgeEvent(String data) async {
