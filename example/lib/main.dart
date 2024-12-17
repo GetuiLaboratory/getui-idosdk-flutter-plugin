@@ -279,6 +279,10 @@ class _MyAppState extends State<MyApp> {
   }
 
   void onBeginEvent(BuildContext context) {
+    //开发者可以自行设置全局事件属性
+    Map<String, dynamic> map = {"key1": "value1"};
+    IdoFlutter.instance.registerEventProperties(map);
+
     var eventId = _controllerEventIDTime.text;
     if (eventId.isEmpty) {
       print("请设置自定义事件 Event ID");

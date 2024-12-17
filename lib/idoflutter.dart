@@ -183,6 +183,12 @@ class IdoFlutter {
     } else {}
   }
 
+  void registerEventProperties(Map<String, dynamic> map) {
+    if (Platform.isIOS) {
+      _channel.invokeMethod('registerEventProperties', {"properties": map});
+    } else {}
+  }
+
   Future<String?> onBridgeEvent(String data) async {
     // if (Platform.isAndroid) {
     return await _channel.invokeMethod('onBridgeEvent', {"data": data});

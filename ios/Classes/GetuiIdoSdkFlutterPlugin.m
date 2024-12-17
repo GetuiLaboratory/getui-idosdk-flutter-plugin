@@ -55,7 +55,10 @@
         [self setProfile:call result:result];
     } else if ([@"onBridgeEvent" isEqualToString:call.method]) {
         [self onBridgeEvent:call result:result];
-    } else {
+    } else if ([@"registerEventProperties" isEqualToString:call.method]) {
+        [self registerEventProperties:call result:result];
+    }
+    else {
         result(FlutterMethodNotImplemented);
     }
 }
@@ -183,6 +186,16 @@
         [GTCountSDK sharedInstance].profileForceUploadSize = _size;
     }
 }
+
+- (void)registerEventProperties:(FlutterMethodCall *)call result:(FlutterResult)result {
+    NSDictionary *ConfigurationInfo = call.arguments;
+    NSDictionary *pro = ConfigurationInfo[@"properties"];
+    if (pro != nil && [pro isKindOfClass:[NSDictionary class]]) {
+        NSLog(@"\n>>>IDOSDK registerEventProperties,  %@", pro);
+        [GTCountSDK registerEventProperties:pro];
+    }
+}
+
 
 //MARK: - Delegate
 
