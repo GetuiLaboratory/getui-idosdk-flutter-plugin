@@ -12,7 +12,7 @@ flutter pub add idoflutter
 
 ```yaml
 dependencies:
-  idoflutter: ^0.0.1
+  idoflutter: ^0.0.4
 ```
 下载依赖：
 
@@ -40,7 +40,7 @@ defaultConfig {
     }
 ```
 
-配置依赖，最新版本见官网： https://docs.getui.com/geyan/mobile/android/init/
+配置依赖，最新版本见官网： https://docs.getui.com/ido/mobile/android/init/
 
 ```groovy
 dependencies {
@@ -81,18 +81,18 @@ import 'package:idoflutter/idoflutter.dart';
 * channelID: channel（ios)
 * iOS环境下，IDO SDK>=2.0.7.0，会有gtcIdCallback回调
 */
-IdoFlutter().initIdoSdk("5xpxEg5qvI9PNGH2kQAia2","flutter");
+IdoFlutter.instance.initIdoSdk("5xpxEg5qvI9PNGH2kQAia2","flutter");
 
 
 /**
  * 开启SDK日志，默认false，上线需要关闭
  */
-IdoFlutter().setDebugEnable(false);
+IdoFlutter.instance.setDebugEnable(false);
 
 /**
  *获取gtcid
  */
-IdoFlutter().getGtcId(false);
+IdoFlutter.instance.getGtcId(false);
 
 /**
  * 计数统计
@@ -100,35 +100,35 @@ IdoFlutter().getGtcId(false);
  *  map: 自定义属性，用于扩展统计需求
  * 
  */
-IdoFlutter().trackCountEvent(String eventId, Map<String, dynamic>? map);
+IdoFlutter.instance.trackCountEvent(String eventId, Map<String, dynamic>? map);
 
 /**
  * 计时统计开始
  *  eventId：自定义事件 Id ，用于标识事件的唯一
  *  map: 自定义属性，用于扩展统计需求
  */
-IdoFlutter().onBeginEvent(String eventId, Map<String, dynamic>? map);
+IdoFlutter.instance.onBeginEvent(String eventId, Map<String, dynamic>? map);
 
 /**
  * 计时统计结束
  *  eventId：自定义事件 Id ，用于标识事件的唯一
  *  map: 自定义属性，用于扩展统计需求
  */
-IdoFlutter().onEndEvent(String eventId, Map<String, dynamic>? map);
+IdoFlutter.instance.onEndEvent(String eventId, Map<String, dynamic>? map);
 
 
 /**
  * 用户属性设置
  *  map: 自定义用户属性，用于扩展统计需求
  */
-IdoFlutter().setProfile(Map<String, dynamic>? map);
+IdoFlutter.instance.setProfile(Map<String, dynamic>? map);
 
 /**
  * 设置计数事件上传频率
  * timeMillis：设置的eventUploadInterval值，单位毫秒。
  * 默认值为10秒
  */
-IdoFlutter().setEventUploadInterval(Long timeMillis);
+IdoFlutter.instance.setEventUploadInterval(Long timeMillis);
 
 
 /**
@@ -136,21 +136,21 @@ IdoFlutter().setEventUploadInterval(Long timeMillis);
  * size：设置计数事件的强制上传条数eventForceUploadSize
  * 默认数量为30条；
  */
-IdoFlutter().setEventForceUploadSize(int size);
+IdoFlutter.instance.setEventForceUploadSize(int size);
 
 /**
  * 设置用户属性事件上传频率
  * timeMillis：单位毫秒。设置用户属性事件传频率profileUploadInterval
  * 默认值为5秒
  */
-IdoFlutter().setProfileUploadInterval(Long timeMillis)
+IdoFlutter.instance.setProfileUploadInterval(Long timeMillis)
 
 /**
  * 设置用户属性事件强制上传条数
  * size 设置用户属性事件的强制上传条数profileForceUploadSize
  * 默认数量为5条
  */
-IdoFlutter().setProfileForceUploadSize(int size);
+IdoFlutter.instance.setProfileForceUploadSize(int size);
 
 /**
  * IOS 特有
@@ -158,7 +158,7 @@ IdoFlutter().setProfileForceUploadSize(int size);
  * 通过苹果开发者后台创建Group Identify， 用于App主包和Extension之间的数据打通。
  * 
  */
-IdoFlutter().setApplicationGroupIdentifier(String identifier) 
+IdoFlutter.instance.setApplicationGroupIdentifier(String identifier) 
 
 ```
 
