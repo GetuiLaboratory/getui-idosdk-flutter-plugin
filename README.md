@@ -45,7 +45,7 @@ defaultConfig {
 ```groovy
 dependencies {
     //用户运营sdk
-    implementation 'com.getui:gsido:1.4.6.0'
+    implementation 'com.getui:gsido:1.4.11.0'
     //个推核心组件
     implementation 'com.getui:gtc:3.2.13.0'
 }
