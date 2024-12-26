@@ -67,14 +67,19 @@
 
     console.log('hi')
     console.log(GsIdo);
-    GsIdo.setDebugEnable(9);
+    GsIdo.setDebugEnable(true);
     GsIdo.init({
         //统计sdk appid
         // gsAppid: 'xXmjbbab3b5F1m7wAYZoG2'
-        gsAppid: 'A888n2pctF4BRpX7km8888'
+        gsAppid: 'A888n2pctF4BRpX7km8888',
+        detectFlutterEnvTimeout: 300,
+    }).then(() => {
+        //这里调用 setUserId
+        GsIdo.setUserId('1234567890');
+        $('#gtcid').text("gtcid:"+GsIdo.gtcid())
     });
 
-    $('#gtcid').text("gtcid:"+GsIdo.gtcid())
+    
     $('#event').click(function () {
         GsIdo.onEvent({
             //事件id
