@@ -11,3 +11,6 @@
 * 修复`Android`和 `iOS`与`Flutter`数据交互问题
 * 修复`Android`适配低版本问题
 * 升级`Android SDK`版本至`1.4.11.0`
+
+## 0.0.5
+* 支持ohos

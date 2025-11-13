@@ -12,7 +12,7 @@ flutter pub add idoflutter
 
 ```yaml
 dependencies:
-  idoflutter: ^0.0.4
+  idoflutter: ^0.0.5
 ```
 下载依赖：
 
@@ -64,6 +64,45 @@ allprojects {
     }
 }
 ```
+
+### 2.2 HarmonyOS 配置
+*  引入插件, 见上文
+* 使用鸿蒙定制版 Flutter，否则报错依赖缺失, 下载地址: [OpenHarmony Flutter](https://gitcode.com/openharmony-tpc/flutter_flutter) 及 [使用教程](https://developer.huawei.com/consumer/cn/blog/topic/03178381351651116)。
+* [启动应用教程](https://gitcode.com/openharmony-tpc/flutter_flutter#%E6%9E%84%E5%BB%BA%E6%AD%A5%E9%AA%A4)
+
+
+
+#### 2.2.1 配置 `build-profile.json5`
+ohos工程需要兼容字节码包,在项目级build-profile.json5:
+```yaml
+    "buildOption": {
+      "strictMode": {
+         "useNormalizedOHMUrl": true
+      }
+    }
+```
+#### 2.2.2 配置 `module.json5`
+在项目中配置：
+```yaml
+"requestPermissions": [
+    {"name": "ohos.permission.INTERNET"},
+    {"name": "ohos.permission.GET_NETWORK_INFO"},
+    {
+        "name": "ohos.permission.APP_TRACKING_CONSENT",
+        "reason": "$string:tracking_reason",
+        "usedScene": {
+            "abilities": ["EntryAbility"]
+        }
+    }
+],
+"metadata": [
+    {"name": "GETUI_APPID", "value": "aXJsKBst3i9WK3E7etwBL5"},//你的appid
+]
+```
+
+#### 2.3.3 注册插件
+运行 fvm flutter build hap 后自动生成 GeneratedPluginRegistrant
+
 
 
 #  3、使用
@@ -172,4 +211,7 @@ https://github.com/GetuiLaboratory/getui-idosdk-flutter-plugin/tree/main/example
 
 - GCIDOSDK>=2.0.7.0版本，需要使用最新插件版本
 - GCIDOSDK<2.0.7.0版本，需要使用插件版本0.0.1
+https://github.com/GetuiLaboratory/getui-idosdk-flutter-plugin/tree/main/example
+
+### 3.2 ohos demo
 https://github.com/GetuiLaboratory/getui-idosdk-flutter-plugin/tree/main/example

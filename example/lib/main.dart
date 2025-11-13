@@ -6,9 +6,13 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:idoflutter/idoflutter.dart';
 import 'dart:io';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+// import  'package:flutter_inappwebview_ohos/flutter_inappwebview_ohos.dart' ;
 import 'WebViewPage.dart';
 
 void main() {
+   WidgetsFlutterBinding.ensureInitialized(); // 必须！
+
   runApp(const MyApp());
 }
 

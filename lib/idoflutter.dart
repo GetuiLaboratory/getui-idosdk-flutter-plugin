@@ -25,11 +25,7 @@ class IdoFlutter {
   }
 
   void setDebugEnable(bool isDebug) {
-    if (Platform.isAndroid) {
-      _channel.invokeMethod('setDebugEnable', {"debugEnable": isDebug});
-    } else {
-      _channel.invokeMethod('setDebugEnable', {"debugEnable": isDebug});
-    }
+     _channel.invokeMethod('setDebugEnable', {"debugEnable": isDebug});
   }
 
   void initIdoSdk(String appId, String channelId) {
@@ -43,53 +39,29 @@ class IdoFlutter {
   }
 
   void preInitIdoSdk() {
-    if (Platform.isAndroid) {
-      _channel.invokeMethod('preInit');
-    } else {}
+    _channel.invokeMethod('preInit');
   }
 
   Future<String?> getGtcId() async {
-    if (Platform.isAndroid) {
-      return await _channel.invokeMethod('getGtcId');
-    } else {
-      return await _channel.invokeMethod('getGtcId');
-    }
+     return await _channel.invokeMethod('getGtcId');
   }
 
   void trackCountEvent(String eventId, Map<String, dynamic>? map) {
-    if (Platform.isAndroid) {
-      _channel.invokeMethod(
-          'trackCountEvent', {"eventId": eventId, "jsonObject": map});
-    } else {
-      _channel.invokeMethod(
-          'trackCountEvent', {"eventId": eventId, "jsonObject": map});
-    }
+    _channel.invokeMethod(
+             'trackCountEvent', {"eventId": eventId, "jsonObject": map});
   }
 
   void onBeginEvent(String key, Map<String, dynamic>? map) {
-    if (Platform.isAndroid) {
-      _channel
-          .invokeMethod('onBeginEvent', {"eventId": key, "jsonObject": map});
-    } else {
-      _channel
-          .invokeMethod('onBeginEvent', {"eventId": key, "jsonObject": map});
-    }
+    _channel
+              .invokeMethod('onBeginEvent', {"eventId": key, "jsonObject": map});
   }
 
   void onEndEvent(String key, Map<String, dynamic>? map) {
-    if (Platform.isAndroid) {
-      _channel.invokeMethod('onEndEvent', {"eventId": key, "jsonObject": map});
-    } else {
-      _channel.invokeMethod('onEndEvent', {"eventId": key, "jsonObject": map});
-    }
+    _channel.invokeMethod('onEndEvent', {"eventId": key, "jsonObject": map});
   }
 
   void setProfile(Map<String, dynamic> map) {
-    if (Platform.isAndroid) {
-      _channel.invokeMethod('setProfile', {"jsonObject": map});
-    } else {
-      _channel.invokeMethod('setProfile', {"jsonObject": map});
-    }
+     _channel.invokeMethod('setProfile', {"jsonObject": map});
   }
 
   void addEventHandler({required EventHandler initIdoSdkCallBack}) {
@@ -108,72 +80,44 @@ class IdoFlutter {
   }
 
   void setInstallChannel(String channel) {
-    if (Platform.isAndroid) {
-      _channel.invokeMethod('setInstallChannel', {"channel": channel});
-    } else {}
+     _channel.invokeMethod('setInstallChannel', {"channel": channel});
   }
 
   void setAppId(String appId) {
-    if (Platform.isAndroid) {
-      _channel.invokeMethod('setAppId', {"appId": appId});
-    } else {}
+    _channel.invokeMethod('setAppId', {"appId": appId});
   }
 
   void setEventUploadInterval(Long timeMillis) {
-    if (Platform.isAndroid) {
-      _channel
-          .invokeMethod('setEventUploadInterval', {"timeMillis": timeMillis});
-    } else {
-      _channel
-          .invokeMethod('setEventUploadInterval', {"timeMillis": timeMillis});
-    }
+   _channel.invokeMethod('setEventUploadInterval', {"timeMillis": timeMillis});
+
   }
 
   void setEventForceUploadSize(int size) {
-    if (Platform.isAndroid) {
-      _channel.invokeMethod('setEventForceUploadSize', {"size": size});
-    } else {
-      _channel.invokeMethod('setEventForceUploadSize', {"size": size});
-    }
+       _channel.invokeMethod('setEventForceUploadSize', {"size": size});
   }
 
   void setProfileUploadInterval(Long timeMillis) {
-    if (Platform.isAndroid) {
-      _channel
-          .invokeMethod('setProfileUploadInterval', {"timeMillis": timeMillis});
-    } else {
-      _channel
-          .invokeMethod('setProfileUploadInterval', {"timeMillis": timeMillis});
-    }
+     _channel
+             .invokeMethod('setProfileUploadInterval', {"timeMillis": timeMillis});
   }
 
   void setProfileForceUploadSize(int size) {
-    if (Platform.isAndroid) {
       _channel.invokeMethod('setProfileForceUploadSize', {"size": size});
-    } else {
-      _channel.invokeMethod('setProfileForceUploadSize', {"size": size});
-    }
   }
 
   void setSessionTimeoutMillis(Long timeoutMillis) {
-    if (Platform.isAndroid) {
-      _channel.invokeMethod(
+    _channel.invokeMethod(
           'setSessionTimeoutMillis', {"timeoutMillis": timeoutMillis});
-    } else {}
   }
 
   void setMinAppActiveDuration(Long minAppActiveDuration) {
-    if (Platform.isAndroid) {
-      _channel.invokeMethod('setMinAppActiveDuration',
-          {"minAppActiveDuration": minAppActiveDuration});
-    } else {}
+    _channel.invokeMethod('setMinAppActiveDuration',
+            {"minAppActiveDuration": minAppActiveDuration});
   }
 
   void setMaxAppActiveDuration(Long maxAppActiveDuration) {
-    if (Platform.isAndroid) {
-      _channel.invokeMethod('setMaxAppActiveDuration',
-          {"maxAppActiveDuration": maxAppActiveDuration});
-    } else {}
+    _channel.invokeMethod('setMaxAppActiveDuration',
+            {"maxAppActiveDuration": maxAppActiveDuration});
   }
 
   void setApplicationGroupIdentifier(String identifier) {

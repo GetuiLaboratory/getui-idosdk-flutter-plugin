@@ -1,6 +1,6 @@
 name: idoflutter
 description: "ido flutter plugin"
-version: 0.0.4
+version: 0.0.5
 homepage: https://www.getui.com
 
 environment:
@@ -38,6 +38,8 @@ flutter:
         package: com.example.idoflutter
         pluginClass: GetuiIdoSdkFlutterPlugin
       ios:
+        pluginClass: GetuiIdoSdkFlutterPlugin
+      ohos:
         pluginClass: GetuiIdoSdkFlutterPlugin
 
   # To add assets to your plugin package, add an assets section, like this:

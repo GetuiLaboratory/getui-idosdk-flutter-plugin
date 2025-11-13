@@ -16,8 +16,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+#  flutter_inappwebview: ^6.0.0
+  flutter_inappwebview:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_inappwebview.git
+      path: "flutter_inappwebview"
 
-  flutter_inappwebview: ^6.1.5
   idoflutter:
     # When depending on this package from a real application you should use:
     #   getui_idosdk_flutter_plugin: ^x.y.z
@@ -84,3 +88,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+#dependency_overrides:
+#  flutter_inappwebview:
+#    git:
+#      url: https://gitcode.com/openharmony-sig/flutter_inappwebview.git
+#      path: "flutter_inappwebview"
